@@ -3,6 +3,8 @@
 **v0.1 · 2026-10-28 · Pacific/Auckland**  
 **Research and product strategy; not contest implementation.**
 
+**Technical refresh 2026-10-29:** [Final research](FINAL_TECHNICAL_RESEARCH_2026-10-29.md) records live evidence; [Architecture](ARCHITECTURE.md) is the single frozen design and [Delivery Plan](DELIVERY_PLAN.md) owns dates. P0 is native Testnet; P1 is one conditional Base USDC -> NEAR USDC mainnet wallet route. No real payment/product implementation yet. Oct 28 observations below remain explicitly historical.
+
 ## Executive recommendation
 
 Keep InvoiceFlow, but **do not build only an invoice CRUD page with an onchain transaction hash**. The intended product is **Verifiable Cross-Chain Invoicing & Settlement**: merchants request an exact stablecoin amount; customers pay on a supported source chain using NEAR Intents; the backend independently validates destination-chain settlement, reconciles exactly once and issues an independently re-checkable evidence bundle. The differentiator is the trustworthy *business-level settlement workflow*, not simply integration of the existing 1Click API.
@@ -95,38 +97,30 @@ Technical sources: [NEAR RPC Transactions](https://docs.near.org/api/rpc/transac
 
 Any simulated negative example must say `SIMULATED TEST`. Any unexecuted mainnet path must say `DRY RUN` or `NOT VERIFIED`.
 
-## Proposed *internal*, non-official scoring rubric
+## Qualitative evidence checklist (not official weights)
 
-| Dimension | Planning weight | Proof we need |
-|---|---:|---|
-| Technical correctness | 25% | Real finality checks, replay prevention, fault tests |
-| Originality | 25% | Open verifier and business-level provenance |
-| Real-world value | 25% | Exact stablecoin settlement for a useful merchant scenario |
-| UX | 15% | Transparent amount/fees/states in an understandable checkout |
-| Sustainability | 10% | Self-hostable docs, reusable API, clear trust boundaries |
+| Dimension | Evidence to demonstrate |
+|---|---|
+| Technical correctness | Real finality/receipt checks, replay protection and rollback/concurrency tests |
+| Originality | Open verifier with honest invoice/cross-chain trust boundaries |
+| Real-world value | Merchant receives the exact chosen asset; receivable reconciles once |
+| UX | Amounts, fees, waiting/recovery and audit results are clear |
+| Sustainability | Runnable self-host instructions, reproducible verification and limited dependencies |
 
-These weights are **our planning heuristic, not official scoring rules**. There is no defensible numerical probability of winning without seeing the field.
+No official numerical weights or probability of winning are asserted. A JSON hash is not authenticity/consensus proof; external invoice binding and global uniqueness cannot be inferred from a chain transfer.
 
 ## Scope and stop-loss
 
-**P0 floor:** invoice, real NEAR testnet native Transfer, `FINAL` RPC verification, exactly-once reconciliation, audit receipt, tested public demo. Native `Transfer` has no invoice memo: require known hash plus sender/recipient/amount association.  
+**P0 floor:** invoice, real NEAR testnet native Transfer, `FINAL` RPC verification, exactly-once reconciliation, audit receipt, tested public demo. Native `Transfer` has no invoice memo: require authenticated payer control, frozen attempt/checkpoint, exact recipient/amount and invoice-bound claim; business purpose remains off-chain. Native fallback invoices request testnet NEAR, not USDC.
 **Prize-focused target:** mainnet 1Click exact-output settlement *if transaction authorization and actual evidence are available*, terminal-status handling, destination-chain verification, open proof replayer.  
 **Stretch:** merchant API / verified event webhook / reusable SDK.  
 **Out:** AI gimmicks, ERP, custom bridges, token issuance, premature multi-network adapters and nonessential contracts.
 
-If verified Intents settlement cannot work reliably by **2026-11-08 NZDT**, stop that extension and ship the stable testnet P0 honestly. One complete reliable flow beats a partially faked cross-chain flow.
+If verified Intents settlement cannot work reliably by **2026-11-08 18:00 NZDT**, stop that extension and ship the stable testnet P0 honestly. One complete reliable flow beats a partially faked cross-chain flow.
 
 ## Two-week execution gates (NZDT)
 
-| Date | Milestone |
-|---|---|
-| 10/28–10/31 | Research, architecture, interface feasibility, documentation only |
-| 11/1 13:00–11/4 | Start contest code, invoice baseline, NEAR testnet payment verifier |
-| 11/5–11/8 | Exact-output Intents and real settlement verification if permitted |
-| 11/9–11/11 | Independent verifier, negative scenarios, concurrency tests |
-| 11/12–11/13 | Polish, deployment, public evidence, CI, judges' docs |
-| 11/14 18:00 | Internal target for complete, human-approved submission |
-| 11/15 12:59 | Absolute organizer deadline |
+[DELIVERY_PLAN.md](DELIVERY_PLAN.md) is the authoritative schedule: Nov 1–3 invoice slice (start Nov 1 13:00), Nov 4–5 real native payment, Nov 6–7 reconciliation/audit, Nov 8 18:00 P1 gate, Nov 9–11 approved cross-chain/verifier/UI work, Nov 12–13 E2E/security/fixes, Nov 14 deployment/video, final technical check before Nov 15 12:59. Every stage specifies evidence, GO/NO-GO and fallback. No technical artifact mutation after the deadline.
 
 ## Competitive assessment
 
