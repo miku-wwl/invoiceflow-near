@@ -1,0 +1,14 @@
+# Framework output and secret protection for the later implementation
+node_modules/
+.next/
+out/
+dist/
+coverage/
+playwright-report/
+test-results/
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+.DS_Store
